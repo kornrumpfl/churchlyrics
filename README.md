@@ -21,6 +21,8 @@ after filling the inputs you can combine the two languages by clicking on the Co
 
 ## `Hosted App`
 
+[hosted app](https://churchlyrics.vercel.app/)
+
 ## `Tech Stack`
 
 - React
