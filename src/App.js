@@ -8,8 +8,8 @@ function App() {
   const [textArea1, setTextArea1] = useState("");
   const [textArea2, setTextArea2] = useState("");
   const [combinedText, setCombinedText] = useState("");
-  const [songtitle, setSongtitle] = useState("");
-  const [songauthor, setSongauthor] = useState("");
+  const [songtitle, setSongTitle] = useState("");
+  const [songauthor, setSongAuthor] = useState("");
 
   const combineText = () => {
     const lines1 = textArea1.split("\n");
@@ -71,21 +71,40 @@ function App() {
     URL.revokeObjectURL(url);
   };
 
+  const handleSongTitle = (textSongTitle) =>{
+    // Regular expression to match any special characters
+    const specialCharsRegex = /[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?]+/g;
+
+    // Remove special characters from the input
+    setSongTitle(textSongTitle.replace(specialCharsRegex, ''));
+  }
+
+  const handleSongAuthor = (textSongAuthor)=>{
+      // Regular expression to match any special characters
+      const specialCharsRegex = /[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\/?]+/g;
+
+      // Remove special characters from the input
+      setSongAuthor(textSongAuthor.replace(specialCharsRegex, ''));
+
+  }
   return (
     <div>
+      <div className="card flex align-items-end justify-content-center">
       <h1 className="card flex justify-content-center">Church Lyrics</h1>
+      <h4 className="ml-2">v1.1</h4>
+      </div>
       <div className="flex flex-column gap-2 mb-3 w-24rem">
         <label htmlFor="songtitle">Song Title</label>
         <InputText
           id="songtitle"
           value={songtitle}
-          onChange={(e) => setSongtitle(e.target.value)}
+          onChange={(e)=>handleSongTitle(e.target.value)}
         />
         <label htmlFor="songauthor">Song Author</label>
         <InputText
           id="songauthor"
           value={songauthor}
-          onChange={(e) => setSongauthor(e.target.value)}
+          onChange={(e) => handleSongAuthor(e.target.value)}
         />
       </div>
       <div className="grid">
