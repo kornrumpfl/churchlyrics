@@ -1,22 +1,23 @@
 import React from "react";
 import "../node_modules/primeflex/primeflex.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { InputTextarea } from "primereact/inputtextarea";
 import { InputText } from "primereact/inputtext";
 import GroupBox from "./components/groupBox";
+import fixedData from "./components/dataForTest";
+
 
 function App() {
-  const [textArea1, setTextArea1] = useState("");
-  const [textArea2, setTextArea2] = useState("");
+  const [textArea1, setTextArea1] = useState(``);
+  const [textArea2, setTextArea2] = useState(``);
   const [combinedText, setCombinedText] = useState("");
-  const [songtitle, setSongTitle] = useState("");
-  const [songauthor, setSongAuthor] = useState("");
+  const [songtitle, setSongTitle] = useState(``);
+  const [songauthor, setSongAuthor] = useState(``);
   const [numberOfLines, setNumberOfLines] = useState("");
 
   const combineText = () => {
-    const lines1 = textArea1.split("\n");
-    const lines2 = textArea2.split("\n");
-
+    const lines1 = textArea1.split("\n").filter(isNaN);
+    const lines2 = textArea2.split("\n").filter(isNaN);
     const combinedLines = [];
 
     combinedLines.push(`<?xml version='1.0' encoding='UTF-8'?>`);
@@ -50,7 +51,6 @@ function App() {
         for (let i = 0; i < Math.max(lines1.length, lines2.length); i++) {
           const line1 = lines1[i] || "";
           const line2 = lines2[i] || "";
-
           if (line1.trim() !== "" && line2.trim() !== "") {
             combinedLines.push(
               `<verse name="v${count}"><lines> \n ${line1} <br/> \n <tag name="tr1">${line2}</tag></lines></verse>`
@@ -65,17 +65,14 @@ function App() {
           const line2 = lines2[i] || "";
           const line3 = lines1[i + 1] || "";
           const line4 = lines2[i + 1] || "";
-
           if (
             line1.trim() !== "" &&
-            line2.trim() !== "" &&
-            line3.trim() !== "" &&
-            line4.trim() !== ""
+            line2.trim() !== ""
           ) {
             combinedLines.push(
               `<verse name="v${count}"><lines> \n ${line1}<br/> \n ${line3}<br/> \n <tag name="tr1">${line2} <br/> \n${line4}</tag></lines></verse>`
             );
-            count += 2; // Increment the count for two combined lines
+            count++; // Increment the count for two combined lines
           }
         }
         break;
@@ -99,7 +96,7 @@ function App() {
             combinedLines.push(
               `<verse name="v${count}"><lines> \n ${line1}<br/> \n ${line3}<br/> \n${line5}<br/> \n <tag name="tr1">${line2} <br/> \n${line4} <br/> \n${line6}</tag></lines></verse>`
             );
-            count += 3; // Increment the count for two combined lines
+            count++; // Increment the count for two combined lines
           }
         }
         break;
@@ -127,7 +124,7 @@ function App() {
             combinedLines.push(
               `<verse name="v${count}"><lines> \n ${line1}<br/> \n ${line3}<br/> \n${line5}<br/> \n${line7}<br/> \n <tag name="tr1">${line2} <br/> \n${line4} <br/> \n${line6}<br/> \n${line8}</tag></lines></verse>`
             );
-            count += 4; // Increment the count for two combined lines
+            count++; // Increment the count for two combined lines
           }
         }
         break;
@@ -172,11 +169,21 @@ function App() {
     setNumberOfLines(groupedLines);
   }
 
+  const fillText = () => {
+    fixedData?.map((item) => {
+      setSongAuthor(item.songAutor)
+      setSongTitle(item.songTitle)
+      setTextArea1(item.portuguese)
+      setTextArea2(item.german)
+    })
+
+  }
+
   return (
     <div>
       <div className="card flex align-items-end justify-content-center">
         <h1 className="card flex justify-content-center">Church Lyrics</h1>
-        <h4 className="ml-2">v2.0</h4>
+        <h4 className="ml-2">v2.1</h4>
       </div>
       <div className="flex flex-column gap-2 mb-3 w-24rem">
         <label htmlFor="songtitle">Song Title</label>
@@ -191,6 +198,7 @@ function App() {
           value={songauthor}
           onChange={(e) => handleSongAuthor(e.target.value)}
         />
+        {/*  <button onClick={fillText} className="w-full md:w-20rem md:h-3rem">Fill</button> */}
       </div>
       <div className="grid">
         <div className="col">
